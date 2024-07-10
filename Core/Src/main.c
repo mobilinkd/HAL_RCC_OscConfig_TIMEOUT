@@ -88,9 +88,11 @@ void SysClock2(void)
       Error_Handler();
   }
 
-  TPI->ACPR = 7; // 16MHz
+  // Configure the Systick interrupt time. This is needed to
+  // ensure we get proper timeouts in HAL_RCC_OscConfig.
+  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
 
-  // __HAL_RCC_PLL_DISABLE(); // Work around PLL bug?!?
+  // __HAL_RCC_PLL_DISABLE(); // Work around HAL_RCC_OscConfig bug
 
   // Disable HSE, enable MSI and set to 2MHz, disable PLL.
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI | RCC_OSCILLATORTYPE_HSE;
@@ -126,8 +128,6 @@ void SysClock2(void)
   }
 
   HAL_PWREx_EnableLowPowerRunMode();
-
-  TPI->ACPR = 0;
 
   // Configure the Systick interrupt time
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
