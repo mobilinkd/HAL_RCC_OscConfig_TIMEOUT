@@ -88,8 +88,8 @@ void SysClock2(void)
       Error_Handler();
   }
 
-  // Configure the Systick interrupt time. This is needed to
-  // ensure we get proper timeouts in HAL_RCC_OscConfig.
+  // Configure the Systick interrupt to ensure timeouts are measured
+  // correctly in HAL_RCC_OscConfig.
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
 
   // __HAL_RCC_PLL_DISABLE(); // Work around HAL_RCC_OscConfig bug
